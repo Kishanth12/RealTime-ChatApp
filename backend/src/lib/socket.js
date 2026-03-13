@@ -9,7 +9,7 @@ const server = http.createServer(app);
 // allowed frontend origins
 const allowedOrigins = [
   "http://localhost:5173",
-  process.env.FRONTEND_URL
+  process.env.FRONTEND_URL && process.env.FRONTEND_URL.replace(/\/$/, "")
 ].filter(Boolean);
 
 
