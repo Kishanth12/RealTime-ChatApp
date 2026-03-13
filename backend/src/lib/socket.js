@@ -16,7 +16,13 @@ const allowedOrigins = [
 // socket.io cors
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(null, false);
+        }
+    },
     methods: ["GET", "POST"],
     credentials: true
   }

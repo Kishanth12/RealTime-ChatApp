@@ -24,8 +24,19 @@ const allowedOrigins = [
 ].filter(Boolean);
 
 app.use(cors({
-    origin: allowedOrigins,
-    credentials:true,
+    origin: function (origin, callback) {
+        // allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            // Instead of returning '*', we return null to block the request
+            // or we could return false. To satisfy the browser, never return '*' here.
+            callback(null, false);
+        }
+    },
+    credentials: true,
 }))
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
